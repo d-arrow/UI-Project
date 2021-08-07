@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5902F0C2-713E-4BF0-8037-5094AF55CEEB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SingleplayerLauncher</RootNamespace>
+    <AssemblyName>SingleplayerLauncher</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>OMDUicon-small.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="INIFileParser, Version=2.5.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
+      <HintPath>packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigFile.cs" />
+    <Compile Include="Entities\Map.cs" />
+    <Compile Include="LauncherMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LauncherMainForm.Designer.cs">
+      <DependentUpon>LauncherMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Hero.cs" />
+    <Compile Include="LoadoutEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadoutEditorForm.Designer.cs">
+      <DependentUpon>LoadoutEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Names\Map.cs" />
+    <Compile Include="ModLoaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModLoaderForm.Designer.cs">
+      <DependentUpon>ModLoaderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mods\Mod.cs" />
+    <Compile Include="Mods\NoTrapCap.cs" />
+    <Compile Include="Mods\TrapsInTraps.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\SpitfireGameUPK.cs" />
+    <Compile Include="Resources\DefaultValues.cs" />
+    <Compile Include="Resources\IniConfig.cs" />
+    <Compile Include="Resources\Loadout.cs" />
+    <Compile Include="Resources\GameInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="UPKFile.cs" />
+    <EmbeddedResource Include="LauncherMainForm.resx">
+      <DependentUpon>LauncherMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadoutEditorForm.resx">
+      <DependentUpon>LoadoutEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModLoaderForm.resx">
+      <DependentUpon>ModLoaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_NPE_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_NPE_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_NPE_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_NPE_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_NPE_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_2Lane.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_AcademyCanals.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_AcademyDungeon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_AcademyLibrary.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_AcademyTemple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Avalanche.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_BanquetHall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Baths.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Corridors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_CrogonKeep.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Flushed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\Minimap_PvE_FrostBite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Gap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Highlands.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Mausoleum.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_OneWay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\Minimap_PvE_Orcatraz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Orcvil_Temple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_RestrictedSection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Sewers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_SharkIsle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Solo_2Lane.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_SUR_JungleTribe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_SUR_NorthernClans.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_SUR_Pirates.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Surrounded.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_TheWall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_ThroneRoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_Towering.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\MiniMap_PvE_TrainingGrounds.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\Water_Garden_minimap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\Castle_Gates_minimap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\minimaps\Midnight_Market_minimap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\GUI\OMDU_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\skins\default\player_Bionka_Queen_Momma.png" />
+    <Content Include="images\skins\default\player_Blackpaw_Vindicator_of_the_Dead.png" />
+    <Content Include="images\skins\default\player_Bloodspike_The_Brutal.png" />
+    <Content Include="images\skins\default\player_Brass_The_Master_Engineer.png" />
+    <Content Include="images\skins\default\player_Cygnus_The_Master_of_the_Order.png" />
+    <Content Include="images\skins\default\player_Deadeye_The_Eight_Groves_Most_Wanted.png" />
+    <Content Include="images\skins\default\player_Dobbin_Claim_Jumper.png" />
+    <Content Include="images\skins\default\player_Gabriella_The_Redeemed_Sorceress.png" />
+    <Content Include="images\skins\default\player_Hogarth_Frozen_Shield_of_Deg_Itan.png" />
+    <Content Include="images\skins\default\player_Ivy_Warden_of_the_First_Grove.png" />
+    <Content Include="images\skins\default\player_Maximilian_The_War_Mage.png" />
+    <Content Include="images\skins\default\player_Midnight_Twilight%2527s_Razor.png" />
+    <Content Include="images\skins\default\player_Oziel_The_Soul_Thief.png" />
+    <Content Include="images\skins\default\player_Smolder_The_Fireborn.png" />
+    <Content Include="images\skins\default\player_Stinkeye_Shaman_of_Oasis.png" />
+    <Content Include="images\skins\default\player_Temper_Rage_of_the_Forge.png" />
+    <Content Include="images\skins\default\player_Tundra_Oathkeeper_of_Arctos.png" />
+    <Content Include="images\skins\default\player_Yi-Lin_Jade_Sentinel.png" />
+    <Content Include="OMDUicon-small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
