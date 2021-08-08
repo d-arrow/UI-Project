@@ -2,11 +2,12 @@
 
 namespace SingleplayerLauncher.Resources
 {
-    internal class IniConfig
+    internal static class IniConfig
     {
         // Usable variables within CharactersData.ini
-        // Heroes   (Name, pawnweapon)
-        public static Dictionary<string, string> Heroes = new Dictionary<string, string>
+
+        #region Heroes   (Name, pawnweapon)
+        public static readonly Dictionary<string, string> Heroes = new Dictionary<string, string>
         {
             { "Bionka", "PawnWeapon_Bionka.Pawn_Bionka" },
             { "Blackpaw", "PawnWeapon_Blackpaw.Pawn_Blackpaw" },
@@ -28,10 +29,10 @@ namespace SingleplayerLauncher.Resources
             { "Yi-Lin", "PawnWeapon_hooksword.Pawn_hooksword" },
             { "Zoey", "PawnWeapon_Zoey.Pawn_Zoey" }
         };
+        #endregion
 
-
-        // Maps { Name, umap }
-        public static Dictionary<string, string> Maps = new Dictionary<string, string>
+        #region Maps { Name, umap }
+        public static readonly Dictionary<string, string> Maps = new Dictionary<string, string>
         {
             { "Academy Sewers", "PvE_Sewers.umap" },
             { "Archmage Library", "PvE_AcademyLibrary.umap" },
@@ -74,28 +75,30 @@ namespace SingleplayerLauncher.Resources
             { "Survival Tutorial", "TutorialSurvival.umap" },
             { "Basics Tutorial", "NewbieTutorial.umap" }
         };
+        #endregion
 
-        // GameModes { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
-        public static Dictionary<string, string> GameModes = new Dictionary<string, string>
+        #region GameModes { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
+        public static readonly Dictionary<string, string> GameModes = new Dictionary<string, string>
         {
             { "Survival", "1" },
             { "Endless", "5" }
             //{ "Weekly Challenge", "" }
             //{ "Chaos Trials", "" }
         };
+        #endregion
 
-
-        // Difficulty { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
-        public static Dictionary<string, string> survivalDifficulties = new Dictionary<string, string>
+        #region Difficulty { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
+        public static readonly Dictionary<string, string> survivalDifficulties = new Dictionary<string, string>
         {
             { "Apprentice", "1" },
             { "War Mage", "11" },
             { "Master", "26" },
             { "Rift Lord", "46" }
         };
+        #endregion
 
-        // Endless Difficulty { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
-        public static Dictionary<string, string> endlessDifficulties = new Dictionary<string, string>
+        #region Endless Difficulty { Name, DefaultOfflineDifficulty } (DefaultGame.ini)
+        public static readonly Dictionary<string, string> endlessDifficulties = new Dictionary<string, string>
         {
             { "Endless+", "100" },
             { "Endless++", "125" },
@@ -108,9 +111,10 @@ namespace SingleplayerLauncher.Resources
             { "Endless+9", "300" },
             { "Endless+10", "400" }
         };
+        #endregion
 
-        // Survival Difficulty { Name, {DefaultOfflinePlayerLevel, DefaultOfflineDifficulty } (DefaultGame.ini)
-        public static Dictionary<string, Dictionary<string, int[]>> survivalExtraDifficulties = new Dictionary<string, Dictionary<string, int[]>>
+        #region Survival Difficulty { Name, {DefaultOfflinePlayerLevel, DefaultOfflineDifficulty } (DefaultGame.ini)
+        public static readonly Dictionary<string, Dictionary<string, int[]>> survivalExtraDifficulties = new Dictionary<string, Dictionary<string, int[]>>
         {
             { "Apprentice", new Dictionary<string, int[]>
                 {
@@ -138,14 +142,16 @@ namespace SingleplayerLauncher.Resources
                 }
             }
         };
+        #endregion
 
-        // Dyes (Name, IdxDye)
-        public static Dictionary<string, string> Dyes = new Dictionary<string, string>
+        #region Dyes (Name, IdxDye)
+        public static readonly Dictionary<string, string> Dyes = new Dictionary<string, string>
         {
             { "Normal", "0" },
             { "Heroic", "1" },
             { "Legendary", "2" }
         };
+        #endregion
 
     }
 }

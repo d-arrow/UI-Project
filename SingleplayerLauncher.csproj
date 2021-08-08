@@ -82,7 +82,9 @@
     <Compile Include="LoadoutEditorForm.Designer.cs">
       <DependentUpon>LoadoutEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Names\Map.cs" />
+    <Compile Include="Names\DifficultyNames.cs" />
+    <Compile Include="Names\HeroNames.cs" />
+    <Compile Include="Names\MapNames.cs" />
     <Compile Include="ModLoaderForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,31 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
+
+using SingleplayerLauncher.Names;
 
 namespace SingleplayerLauncher.Resources
 {
-    public class Tuple<T1, T2>
-    {
-        public T1 First { get; private set; }
-        public T2 Second { get; private set; }
-        internal Tuple(T1 first, T2 second)
-        {
-            First = first;
-            Second = second;
-        }
-    }
-
-    public static class Tuple
-    {
-        public static Tuple<T1, T2> New<T1, T2>(T1 first, T2 second)
-        {
-            Tuple<T1, T2> tuple = new Tuple<T1, T2>(first, second);
-            return tuple;
-        }
-    }
-
-
-
-
-
     internal static class GameInfo
     {
 
@@ -69,23 +48,21 @@ namespace SingleplayerLauncher.Resources
             }
         }
 
-        public static Dictionary<string, Hero> Heroes = new Dictionary<string, Hero>
+        public static readonly Dictionary<string, Hero> Heroes = new Dictionary<string, Hero>
         {
-            { "Bionka", new Hero( "Bionka", new Dictionary<string, Skin> {
+            { HeroNames.BIONKA, new Hero( HeroNames.BIONKA, new Dictionary<string, Skin> {
                                                         { "Default", new Skin("Default", new byte[] { 0x54, 0xDF, 0x00, 0x00 } ) },
                                                         { "Lizard Queen", new Skin("Lizard Queen", new byte[] { 0x56, 0xDF, 0x00, 0x00 } ) },
                                                         { "Fluffalump", new Skin("Fluffalump", new byte[] { 0x58, 0xDF, 0x00, 0x00 } ) },
                                                         { "Bionka Bunny", new Skin("Bionka Bunny", new byte[] { 0x5A, 0xDF, 0x00, 0x00 } ) }
-                                                     },
-                625)
-            },
-            { "Blackpaw", new Hero("Blackpaw", null, 341) },
-            { "Bloodspike", new Hero("Bloodspike", null, 600) },
-            { "Brass", new Hero("Brass", null, 350) },
-            { "Cygnus", new Hero("Cygnus", null, 215) },
-            { "Deadeye", new Hero("Deadeye", null, 219) },
-            { "Dobbin", new Hero("Dobbin", null, 500) },
-            { "Gabriella", new Hero( "Gabriella", new Dictionary<string, Skin> {
+            }, 625)},
+            { HeroNames.BLACKPAW, new Hero(HeroNames.BLACKPAW, null, 341) },
+            { HeroNames.BLOODSPIKE, new Hero(HeroNames.BLOODSPIKE, null, 600) },
+            { HeroNames.BRASS, new Hero( HeroNames.BRASS, null, 350) },
+            { HeroNames.CYGNUS, new Hero(HeroNames.CYGNUS, null, 215) },
+            { HeroNames.DEADEYE, new Hero(HeroNames.DEADEYE, null, 219) },
+            { HeroNames.DOBBIN, new Hero(HeroNames.DOBBIN, null, 500) },
+            { HeroNames.GABRIELLA, new Hero( HeroNames.GABRIELLA, new Dictionary<string, Skin> {
                                                         { "Violent Vintage", new Skin("Violent Vintage", new byte[] { 0x02, 0xE0, 0x00, 0x00 } ) },
                                                         { "Enchanted Armor", new Skin("Enchanted Armor", new byte[] { 0x04, 0xE0, 0x00, 0x00 } ) },
                                                         { "Blood Queen", new Skin("Blood Queen", new byte[] { 0x06, 0xE0, 0x00, 0x00 } ) },
@@ -103,10 +80,8 @@ namespace SingleplayerLauncher.Resources
                                                         { "Evil Ways", new Skin("Evil Ways", new byte[] { 0x1E, 0xE0, 0x00, 0x00 } ) },
                                                         { "Dragon Charmer", new Skin("Dragon Charmer", new byte[] { 0x20, 0xE0, 0x00, 0x00 } ) },
                                                         { "Chang'e", new Skin("Chang'e", new byte[] { 0x80, 0xDF, 0x00, 0x00 } ) }
-                                                    },
-                200)
-            },
-            { "Hogarth", new Hero( "Hogarth", new Dictionary<string, Skin> {
+            }, 200)},
+            { HeroNames.HOGARTH, new Hero( HeroNames.HOGARTH, new Dictionary<string, Skin> {
                                                         { "Enchanted Armor", new Skin("Enchanted Armor", new byte[] { 0x8C, 0xDF, 0x00, 0x00 } ) },
                                                         { "God of Plunder", new Skin("God of Plunder", new byte[] { 0x8E, 0xDF, 0x00, 0x00 } ) },
                                                         { "Default", new Skin("Default", new byte[] { 0x90, 0xDF, 0x00, 0x00 } ) },
@@ -119,10 +94,8 @@ namespace SingleplayerLauncher.Resources
                                                         { "Black Thane", new Skin("Black Thane", new byte[] { 0x9E, 0xDF, 0x00, 0x00 } ) },
                                                         { "The Schling", new Skin("The Schling", new byte[] { 0xA0, 0xDF, 0x00, 0x00 } ) },
                                                         { "Dragon Ward", new Skin("Dragon Ward", new byte[] { 0xA2, 0xDF, 0x00, 0x00 } ) }
-                                                    },
-                950)
-            },
-            { "Ivy", new Hero( "Ivy", new Dictionary<string, Skin> {
+            }, 950)},
+            { HeroNames.IVY, new Hero( HeroNames.IVY, new Dictionary<string, Skin> {
                                                         { "Enchanted Armor", new Skin("Enchanted Armor", new byte[] { 0xDA, 0xDF, 0x00, 0x00 } ) },
                                                         { "Valkyrie", new Skin("Valkyrie", new byte[] { 0xDC, 0xDF, 0x00, 0x00 } ) },
                                                         { "Default", new Skin("Default", new byte[] { 0xDE, 0xDF, 0x00, 0x00 } ) },
@@ -133,10 +106,8 @@ namespace SingleplayerLauncher.Resources
                                                         { "Wicked Warden", new Skin("Wicked Warden", new byte[] { 0xE8, 0xDF, 0x00, 0x00 } ) },
                                                         { "Grovewatch", new Skin("Grovewatch", new byte[] { 0xEA, 0xDF, 0x00, 0x00 } ) },
                                                         { "Dragon Tamer", new Skin("Dragon Tamer", new byte[] { 0xEC, 0xDF, 0x00, 0x00 } ) }
-                                                    },
-                162)
-            },
-            { "Maximilian", new Hero("Maximilian", new Dictionary<string, Skin> {
+            }, 162)},
+            { HeroNames.MAXIMILIAN, new Hero(HeroNames.MAXIMILIAN, new Dictionary<string, Skin> {
                                                         { "Lucky Tunic" , new Skin("Lucky Tunic" , new byte[] { 0x4A, 0xE0, 0x00, 0x00 } ) },
                                                         { "Enchanted Armor" , new Skin("Enchanted Armor" , new byte[] { 0x4C, 0xE0, 0x00, 0x00 } ) },
                                                         { "Knight's Watch" , new Skin("Knight's Watch" , new byte[] { 0x4E, 0xE0, 0x00, 0x00 } ) },
@@ -158,12 +129,10 @@ namespace SingleplayerLauncher.Resources
                                                         { "Red Scarf (China Ad)" , new Skin("Red Scarf (China Ad)" , new byte[] { 0x6E, 0xE0, 0x00, 0x00 } ) },
                                                         { "Yellow Scarf (China Ad)" , new Skin("Yellow Scarf (China Ad)" , new byte[] { 0x70, 0xE0, 0x00, 0x00 } ) },
                                                         { "Blue Scarf (China Ad)" , new Skin("Blue Scarf (China Ad)" , new byte[] { 0x72, 0xE0, 0x00, 0x00 } ) }
-                                                     },
-                206)
-            },
-            { "Midnight", new Hero("Midnight", null, 220) },
-            { "Oziel", new Hero("Oziel", null, 200) },
-            { "Smolder", new Hero( "Smolder", new Dictionary<string, Skin> {
+            }, 206)},
+            { HeroNames.MIDNIGHT, new Hero(HeroNames.MIDNIGHT, null, 220) },
+            { HeroNames.OZIEL, new Hero(HeroNames.OZIEL, null, 200) },
+            { HeroNames.SMOLDER, new Hero( HeroNames.SMOLDER, new Dictionary<string, Skin> {
                                                         { "Default", new Skin("Default", new byte[] { 0xF2, 0xDF, 0x00, 0x00 } ) },
                                                         { "Helter Swelter", new Skin("Helter Swelter", new byte[] { 0xF4, 0xDF, 0x00, 0x00 } ) },
                                                         { "Default (White hair)", new Skin("Default (White hair)", new byte[] { 0xF6, 0xDF, 0x00, 0x00 } ) },
@@ -172,99 +141,60 @@ namespace SingleplayerLauncher.Resources
                                                         { "Fire-Alarm Femme", new Skin("Fire-Alarm Femme", new byte[] { 0xFC, 0xDF, 0x00, 0x00 } ) },
                                                         { "Firestarter", new Skin("Firestarter", new byte[] { 0xFE, 0xDF, 0x00, 0x00 } ) },
                                                         { "Wu Xing Dragon Mage", new Skin("Wu Xing Dragon Mage", new byte[] { 0x00, 0xE0, 0x00, 0x00 } ) }
-                                                    },
-                313)
-            },
-            { "Stinkeye", new Hero("Stinkeye", null, 356) },
-            { "Temper", new Hero("Temper", null, 500) },
-            { "Tundra", new Hero("Tundra", null, 625) },
-            { "Yi-Lin", new Hero("Yi-Lin", null, 250) },
-            { "Zoey", new Hero("Zoey", null, 275) }
+            }, 313)},
+            { HeroNames.STINKEYE, new Hero(HeroNames.STINKEYE, null, 356) },
+            { HeroNames.TEMPER, new Hero(HeroNames.TEMPER, null, 500) },
+            { HeroNames.TUNDRA, new Hero(HeroNames.TUNDRA, null, 625) },
+            { HeroNames.YILIN, new Hero(HeroNames.YILIN, null, 250) },
+            { HeroNames.ZOEY, new Hero(HeroNames.ZOEY, null, 275) }
         };
 
-        // Maps { Name, umap }
-        public static Dictionary<string, Map> Maps = new Dictionary<string, Map>
+        public static readonly Dictionary<string, string[]> Maps = new Dictionary<string, string[]>
         {
-            { "Academy Sewers", new Map("Academy Sewers", new string[] { "Rift Lord" } ) },
-            { "Archmage Library", new Map("Archmage Library", new string[] {"Apprentice" } ) },
-            { "Avalanche",  new Map("Avalanche", new string[] { "Master", "Rift Lord" } ) },
-            { "Banquet Hall", new Map("Banquet Hall", new string[] { "Apprentice", "War Mage", "Rift Lord" } ) },
-            { "Castle Gates", new Map("Castle Gates", new string[] { "Master", "Rift Lord" } ) },
-            { "Cliffside Clash", new Map("Cliffside Clash", new string[] { "Apprentice", "Master" } ) },
-            { "Confluence",  new Map("Confluence", new string[] { "Rift Lord" } ) },
-            { "Crogon Keep", new Map("Crogon Keep", new string[] { "War Mage", "Master", "Rift Lord" } ) },
-            { "Docks at Eventide", new Map("Docks at Eventide", new string[] { "Master" } ) },
-            { "Eventide Fortress", new Map("Eventide Fortress", new string[] { "Rift Lord" } ) },
-            { "Eventide Ramparts", new Map("Eventide Ramparts", new string[] {"Apprentice", "War Mage" } ) },
-            { "Frostbite",  new Map("Frostbite", new string[] { "Master", "Rift Lord" } ) },
-            { "Gates of Thuricvod", new Map("Gates of Thuricvod", new string[] { "War Mage", "Rift Lord" } ) },
-            { "Highlands",  new Map("Highlands", new string[] { "Apprentice", "War Mage", "Rift Lord" } ) },
-            { "Maximum Security", new Map("Maximum Security", new string[] { "Rift Lord" } ) },
-            { "Midnight Market", new Map("Midnight Market", new string[] { "War Mage", "Rift Lord" } ) },
-            { "Orcatraz",  new Map("Orcatraz", new string[] { "Master" } ) },
-            { "Orcri-La", new Map("Orcri-La", new string[] { "Master" } ) },
-            { "Restricted Section", new Map("Restricted Section", new string[] { "War Mage", "Rift Lord" } ) },
-            { "Riftmaker's Temple", new Map("Riftmaker's Temple", new string[] { "Apprentice" } ) },
-            { "Shark Island", new Map("Shark Island", new string[] { "War Mage", "Master" } ) },
-            { "Stables at Eventide", new Map("Stables at Eventide", new string[] { "War Mage", "Master" } ) },
-            { "Storm Drain", new Map("Storm Drain", new string[] { "Master" } ) },
-            { "Temple Graveyard", new Map("Temple Graveyard", new string[] { "War Mage", "Rift Lord" } ) },
-            { "The Baths", new Map("The Baths", new string[] { "Apprentice", "Rift Lord" } ) },
-            { "The Falling Folly", new Map("The Falling Folly", new string[] { "Master" } ) },
-            { "The Wall", new Map("The Wall", new string[] { "War Mage", "Master" } ) },
-            { "Throne Room", new Map("Throne Room", new string[] { "Apprentice", "War Mage", "Rift Lord" } ) },
-            { "Thuricvod Village", new Map("Thuricvod Village", new string[] { "War Mage" } ) },
-            { "Training Grounds", new Map("Training Grounds", new string[] { "Apprentice", "War Mage", "Master" } ) },
-            { "Unchained Fortress", new Map("Unchained Fortress", new string[] { "Apprentice", "Master" } ) },
-            { "Water Garden", new Map("Water Garden", new string[] { "Apprentice", "Master" }) }
+            { MapNames.ACADEMY_SEWERS,      new string[] { DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.ARCHMAGE_LIBRARY,    new string[] { DifficultyNames.APPRENTICE.Key } },
+            { MapNames.AVALANCHE,           new string[] { DifficultyNames.MASTER.Key,      DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.BANQUET_HALL,        new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.WAR_MAGE.Key,   DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.CASTLE_GATES,        new string[] { DifficultyNames.MASTER.Key,      DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.CLIFFSIDE_CLASH,     new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.MASTER.Key } },
+            { MapNames.CONFLUENCE,          new string[] { DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.CROGON_KEEP,         new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.MASTER.Key,     DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.DOCKS_AT_EVENTIDE,   new string[] { DifficultyNames.MASTER.Key } },
+            { MapNames.EVENTIDE_FORTRESS,   new string[] { DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.EVENTIDE_RAMPARTS,   new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.WAR_MAGE.Key } },
+            { MapNames.FROSTBITE,           new string[] { DifficultyNames.MASTER.Key,      DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.GATES_OF_THURICVOD,  new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.HIGHLANDS,           new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.WAR_MAGE.Key,   DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.MAXIMUM_SECURITY,    new string[] { DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.MIDNIGHT_MARKET,     new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.ORCATRAZ,            new string[] { DifficultyNames.MASTER.Key } },
+            { MapNames.ORCRI_LA,            new string[] { DifficultyNames.MASTER.Key } },
+            { MapNames.RESTRICTED_SECTION,  new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.RIFTMAKERS_TEMPLE,   new string[] { DifficultyNames.APPRENTICE.Key } },
+            { MapNames.SHARK_ISLAND,        new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.MASTER.Key } },
+            { MapNames.STABLES_AT_EVENTIDE, new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.MASTER.Key } },
+            { MapNames.STORM_DRAIN,         new string[] { DifficultyNames.MASTER.Key } },
+            { MapNames.TEMPLE_GRAVEYARD,    new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.THE_BATHS,           new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.THE_FALLING_FOLLY,   new string[] { DifficultyNames.MASTER.Key } },
+            { MapNames.THE_WALL,            new string[] { DifficultyNames.WAR_MAGE.Key,    DifficultyNames.MASTER.Key } },
+            { MapNames.THRONE_ROOM,         new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.WAR_MAGE.Key,   DifficultyNames.RIFT_LORD.Key } },
+            { MapNames.THURICVOD_VILLAGE,   new string[] { DifficultyNames.WAR_MAGE.Key } },
+            { MapNames.TRAINING_GROUNDS,    new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.WAR_MAGE.Key,   DifficultyNames.MASTER.Key } },
+            { MapNames.UNCHAINED_FORTRESS,  new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.MASTER.Key } },
+            { MapNames.WATER_GARDEN,        new string[] { DifficultyNames.APPRENTICE.Key,  DifficultyNames.MASTER.Key } }
         };
 
-        public static HashSet<string> startingCoin9000Maps = new HashSet<string>
-        {
-            "Academy Sewers",
-            "Archmage Library",
-            "Avalanche",
-            "Banquet Hall",
-            "Cliffside Clash",
-            "Confluence",
-            "Crogon Keep",
-            "Docks at Eventide",
-            "Eventide Fortress",
-            "Eventide Ramparts",
-            "Frostbite",
-            "Gates of Thuricvod",
-            "Highlands",
-            "Maximum Security",
-            "Orcatraz",
-            "Orcri-La",
-            "Restricted Section",
-            "Shark Island",
-            "Stables at Eventide",
-            "Storm Drain",
-            "Temple Graveyard",
-            "The Falling Folly",
-            "The Wall",
-            "Throne Room",
-            "Thuricvod Village",
-            "Training Grounds",
-            "Unchained Fortress",
-        };
+        public static readonly List<string> startingCoin9000Maps = Entities.Map.Maps.Where(x => x.StartingCoin == Entities.Map._9000_COIN).Select(y => y.Name).ToList();
 
-        public static HashSet<string> startingCoin6000Maps = new HashSet<string>
-        {
-            "Castle Gates",
-            "Midnight Market",
-            "Riftmaker's Temple",
-            "The Baths",
-            "Water Garden"
-        };
+        public static readonly List<string> startingCoin6000Maps = Entities.Map.Maps.Where(x => x.StartingCoin == Entities.Map._6000_COIN).Select(y => y.Name).ToList();
 
-        public static Dictionary<string, int> DifficultyTrapTierMap = new Dictionary<string, int>
+        public static readonly Dictionary<string, int> DifficultyTrapTierMap = new Dictionary<string, int>
         {
-            { "Apprentice", 1 },
-            { "War Mage", 2 },
-            { "Master", 4 },
-            { "Rift Lord", 6 }
+            { DifficultyNames.APPRENTICE.Key,  DifficultyNames.APPRENTICE.Value },
+            { DifficultyNames.WAR_MAGE.Key, DifficultyNames.WAR_MAGE.Value },
+            { DifficultyNames.MASTER.Key, DifficultyNames.MASTER.Value },
+            { DifficultyNames.RIFT_LORD.Key, DifficultyNames.RIFT_LORD.Value }
         };
     }
 }

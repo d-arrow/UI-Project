@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SingleplayerLauncher.Names
+﻿namespace SingleplayerLauncher.Names
 {
-    public static class Map
+    public static class MapNames
     {
         public const string
             ACADEMY_SEWERS = "Academy Sewers",

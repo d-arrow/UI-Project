@@ -1,100 +1,79 @@
 ﻿using IniParser;
 using IniParser.Model;
+using IniParser.Model.Configuration;
+using IniParser.Parser;
 using System.IO;
+using System.Text;
 
 namespace SingleplayerLauncher
 {
     internal class ConfigFile
     {
-        private readonly FileIniDataParser parser;
+        private FileIniDataParser fileParser;
         private readonly string path; // (filename too)
         public IniData data;
-        //public Dictionary<string, Dictionary<string, string>> configDict;
 
-        public ConfigFile(string filePath, bool newFile)
+        //FUTURE FEATURE - Local Directory
+        //once we always know where the local file is (c://{some place}/file) we can have a method to check if it exists and/or create it
+        //private readonly string configDirectory = string.Format(@"{0}\config", GetLocalDir());
+
+        public ConfigFile(string filePath, bool newFile = false)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new System.Exception("A required variable was null at runtime.");
+            }
+
             path = filePath;
-            parser = new FileIniDataParser();
-            parser.Parser.Configuration.AllowDuplicateKeys = true;
-            parser.Parser.Configuration.AssigmentSpacer = "";
-            parser.Parser.Configuration.CommentString = ";";
-            parser.Parser.Configuration.AllowCreateSectionsOnFly = true;
+
+            CreateNewParser();
 
             if (!newFile && File.Exists(path))
             {
-                data = parser.ReadFile(path);
+                data = fileParser.ReadFile(path);
             }
             else
             {
                 data = new IniData();
             }
         }
-
-        public ConfigFile(string filePath)
-        {
-            path = filePath;
-            parser = new FileIniDataParser();
-            parser.Parser.Configuration.AllowDuplicateKeys = true;
-            parser.Parser.Configuration.AssigmentSpacer = "";
-            parser.Parser.Configuration.CommentString = ";";
-            parser.Parser.Configuration.AllowCreateSectionsOnFly = true;
-
-            if (File.Exists(path))
-            {
-                data = parser.ReadFile(path);
-            }
-            else
-            {
-                data = new IniData();
-            }
-        }
-
 
         public void Write(IniData data)
         {
-            parser.WriteFile(path, data);
-            // This is needed because the above saves it with BOM and the game can't read it.
-            // might be better with this? https://github.com/rickyah/ini-parser/issues/189#issuecomment-510038349
-            File.WriteAllText(path, File.ReadAllText(path));
+            //We should be able to find this path as a default at some point in the future
+            //until then, we need to throw an exception
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new System.Exception("A required variable was null at runtime.");
+            }
+
+            if (fileParser == null)
+            {
+                CreateNewParser();
+            }
+
+            //BUG CHECK -- do we need the filename, or the full path for writing this file?
+            //probably full path, but need to double check
+            var fileName = Path.GetFileName(path);
+
+            fileParser.WriteFile(fileName, data, new UTF8Encoding(false));
         }
 
-        /*
-        public void add(string section, string key, string value)
+        private void CreateNewParser()
         {
-            if (configDict.ContainsKey(section))
+            var parserConfig = new IniParserConfiguration
             {
-                configDict[section][key] = value;
-            }
-        }
-        /*
-        private void add(string sectionName, string key, string value)
-        {
-            if (sections.Contains)
-            {
-                Section = sections[i]
-                section.sectionDict[key] = value;
-            }
-            else
-            {
-                Section section = new Section(sectionName);
-                section.sectionDict[key] = value;
+                CommentString = ";",
+                SkipInvalidLines = true,
+                AllowDuplicateKeys = true,
+                AssigmentSpacer = "",
+                AllowCreateSectionsOnFly = true
+            };
 
-            }
+            var iniParser = new IniDataParser(parserConfig);
+            fileParser = new FileIniDataParser(iniParser);
         }
 
-        private void addSectionsToData()
-        {            
-            foreach (Section section in sections)
-            {
-                var sectionDict = section.sectionDict;
-                var sectionName = section.sectionName;
-                foreach (KeyValuePair<string, string> entry in sectionDict)
-                {
-                    data[sectionName][entry.Key] = entry.Value;
-                }
-            }
-        }
-        */
 
     }
 }

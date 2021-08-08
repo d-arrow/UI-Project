@@ -11,8 +11,6 @@ namespace SingleplayerLauncher
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit /Singleton
-        static Hero() { }
-        private Hero() { }
 
         public static Hero Instance => instance;
 
@@ -69,7 +67,7 @@ namespace SingleplayerLauncher
             }
 
             ApplyTrapsGear(); // May insert bytes
-            //ApplyTraits();
+            ApplyTraits();
 
             if (UPKFile.nBytesRemoved > 0)
             {
@@ -125,6 +123,11 @@ namespace SingleplayerLauncher
             UPKFile.OverrideBytes(loadoutBytes, loadoutSlotsIndex);
         }
 
+        private void ApplyTraits()
+        {
+
+        }
+
         private void ApplyGuardians()
         {
             if (Guardians == null || Guardians.Length != 2)
@@ -148,15 +151,15 @@ namespace SingleplayerLauncher
             int guardiansArrayElementCountIndex = startIndexGuardians + GuardiansArrayElementCountOffset;
             int guardiansIndex = startIndexGuardians + GuardiansOffset;
 
-            byte[] firstGuardian = Resources.Loadout.Guardians[Guardians[0]].First; // Extra space after each guardian is already included
-            byte[] secondGuardian = Resources.Loadout.Guardians[Guardians[1]].First;
+            byte[] firstGuardian = Resources.Loadout.Guardians[Guardians[0]].Key; // Extra space after each guardian is already included
+            byte[] secondGuardian = Resources.Loadout.Guardians[Guardians[1]].Key;
 
-            byte[] sizeFirstGuardian = new byte[] { Resources.Loadout.Guardians[Guardians[0]].Second, 0x00, 0x00, 0x00 }; // Add the 0x00 to complete the 4 bytes field
+            byte[] sizeFirstGuardian = new byte[] { Resources.Loadout.Guardians[Guardians[0]].Value, 0x00, 0x00, 0x00 }; // Add the 0x00 to complete the 4 bytes field
 
             int secondGuardianOffset = firstGuardian.Length + sizeFirstGuardian.Length + GuardiansOffset + 4; // 4 from second guardian size itself
             byte[] sizeSecondGuardian = new byte[] { (byte)(totalSize - secondGuardianOffset), 0x00, 0x00, 0x00 }; // Counting extra space
 
-            int emptySpaceOffset = secondGuardianOffset + Resources.Loadout.Guardians[Guardians[1]].Second;
+            int emptySpaceOffset = secondGuardianOffset + Resources.Loadout.Guardians[Guardians[1]].Value;
 
             byte[] emptySpace = Enumerable.Repeat((byte)0x00, totalSize - emptySpaceOffset).ToArray();
             // Combining arrays to SizeGuardian1 + Guardian1 + SizeGuardian2 + Guardian2 + emptySpace
@@ -167,7 +170,7 @@ namespace SingleplayerLauncher
             UPKFile.OverrideSingleByte((byte)totalSize, guardiansArraySizeIndex); // Size (counts array element count and both guardians and their sizes but not itself or index so -8)
             //TODO check single byte and avoid override?
             UPKFile.OverrideSingleByte(GuardianSlotsNumber, guardiansArrayElementCountIndex); // Array Element Count 
-        }        
+        }
 
         private void ApplySkin()
         {

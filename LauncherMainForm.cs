@@ -1,52 +1,56 @@
 ﻿using IniParser.Model;
 using Newtonsoft.Json.Linq;
 using SingleplayerLauncher.Mods;
+using SingleplayerLauncher.Names;
 using SingleplayerLauncher.Resources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-//using System.Drawing;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using static SingleplayerLauncher.Entities.Map;
-//toad
-//using System.Drawing;
-//using System.Linq;
-//using WMPLib; //for music
-//using System.Media; //for music
-
 
 namespace SingleplayerLauncher
 {
     public partial class LauncherMainForm : Form
     {
-        private const string characterDataIniPath = "..//SpitfireGame//Config//DefaultCharacterData.ini";
-        private const string defaultGameIniPath = "..//SpitfireGame//Config//DefaultGame.ini";
-        private const string spitfireGameUPKPath = "..//SpitfireGame//CookedPCConsole//SpitfireGame.upk";
-        private const string backupFolderPath = "..//OMDU_Offline_Backups";
+        //TODO temp change these file places
+        private const string characterDataIniPath = ".//SpitfireGame//Config//DefaultCharacterData.ini";
+        private const string defaultGameIniPath = ".//SpitfireGame//Config//DefaultGame.ini";
+        private const string spitfireGameUPKPath = ".//SpitfireGame//CookedPCConsole//SpitfireGame.upk";
+        private const string backupFolderPath = ".//OMDU_Offline_Backups";
 
         private const string characterDataIniFileName = "DefaultCharacterData.ini";
         private const string defaultGameIniFileName = "DefaultGame.ini";
         private const string spitfireGameUPKFileName = "SpitfireGame.upk";
         private const int spitfireGameUPKOriginalFileSize = 100225213;
 
-        private const string UPK_FILES_PATH = "..//SpitfireGame//CookedPCConsole//";
+        //this one too
+        private const string UPK_FILES_PATH = ".//SpitfireGame//CookedPCConsole//";
         private const string MOD_DEFAULT_PAWNWEAPON_UPK_FILES_PATH = ".//DefaultLoadouts//";
 
-        private const string PAWNWEAPON_DEADEYE_UPK_FILENAME = "pawnweapon_deadeye_SF.upk";
-        private const string PAWNWEAPON_ZOEY_UPK_FILENAME = "pawnweapon_zoey_SF.upk";
-        private const string PAWNWEAPON_BRASS_UPK_FILENAME = "pawnweapon_brass_SF.upk";
-        private const string PAWNWEAPON_CYGNUS_UPK_FILENAME = "pawnweapon_cygnus_SF.upk";
-        private const string PAWNWEAPON_BLOODSPIKE_UPK_FILENAME = "pawnweapon_bloodspike_SF.upk";
-        private const string PAWNWEAPON_TEMPER_UPK_FILENAME = "pawnweapon_temper_SF.upk";
-        private const string PAWNWEAPON_HOOKSWORD_UPK_FILENAME = "pawnweapon_hooksword_SF.upk";
-        private const string PAWNWEAPON_OZIEL_UPK_FILENAME = "pawnweapon_oziel_SF.upk";
-        private const string PAWNWEAPON_TUNDRA_UPK_FILENAME = "pawnweapon_tundra_SF.upk";
-        private const string PAWNWEAPON_STINKEYE_UPK_FILENAME = "pawnweapon_stinkeye_SF.upk";
-        private const string PAWNWEAPON_DOBBIN_UPK_FILENAME = "pawnweapon_dobbin_SF.upk";
-        private const string PAWNWEAPON_BLACKPAW_UPK_FILENAME = "pawnweapon_blackpaw_SF.upk";
-        private const string PAWNWEAPON_MIDNIGHT_UPK_FILENAME = "pawnweapon_midnight_SF.upk";
+        private const string PAWNWEAPON_PREFIX = "pawnweapon_";
+        private const string PAWNWEAPON_SUFFIX = "_SF.upk";
+        private static string GetPawnWeaponString(string hero)
+        {
+            return string.Format("{0}{1}{2}", PAWNWEAPON_PREFIX, hero.ToLower(), PAWNWEAPON_SUFFIX);
+        }
+
+        private static readonly string PAWNWEAPON_DEADEYE_UPK_FILENAME = GetPawnWeaponString(HeroNames.DEADEYE); 
+        private static readonly string PAWNWEAPON_ZOEY_UPK_FILENAME = GetPawnWeaponString(HeroNames.ZOEY); 
+        private static readonly string PAWNWEAPON_BRASS_UPK_FILENAME = GetPawnWeaponString(HeroNames.BRASS); 
+        private static readonly string PAWNWEAPON_CYGNUS_UPK_FILENAME = GetPawnWeaponString(HeroNames.CYGNUS);
+        private static readonly string PAWNWEAPON_BLOODSPIKE_UPK_FILENAME = GetPawnWeaponString(HeroNames.BLOODSPIKE);
+        private static readonly string PAWNWEAPON_TEMPER_UPK_FILENAME = GetPawnWeaponString(HeroNames.TEMPER);
+        private static readonly string PAWNWEAPON_HOOKSWORD_UPK_FILENAME = GetPawnWeaponString(HeroNames.YILIN);
+        private static readonly string PAWNWEAPON_OZIEL_UPK_FILENAME = GetPawnWeaponString(HeroNames.OZIEL);
+        private static readonly string PAWNWEAPON_TUNDRA_UPK_FILENAME = GetPawnWeaponString(HeroNames.TUNDRA);
+        private static readonly string PAWNWEAPON_STINKEYE_UPK_FILENAME = GetPawnWeaponString(HeroNames.STINKEYE);
+        private static readonly string PAWNWEAPON_DOBBIN_UPK_FILENAME = GetPawnWeaponString(HeroNames.DOBBIN);
+        private static readonly string PAWNWEAPON_BLACKPAW_UPK_FILENAME = GetPawnWeaponString(HeroNames.BLACKPAW);
+        private static readonly string PAWNWEAPON_MIDNIGHT_UPK_FILENAME = GetPawnWeaponString(HeroNames.MIDNIGHT);
 
         private const int PAWNWEAPON_DEADEYE_UPK_FILE_SIZE = 2971040;
         private const int PAWNWEAPON_ZOEY_UPK_FILE_SIZE = 1644500;
@@ -61,11 +65,14 @@ namespace SingleplayerLauncher
         private const int PAWNWEAPON_DOBBIN_UPK_FILE_SIZE = 1124993;
         private const int PAWNWEAPON_BLACKPAW_UPK_FILE_SIZE = 1242970;
         private const int PAWNWEAPON_MIDNIGHT_UPK_FILE_SIZE = 696772;
+
         private const int NUM_PAWNWEAPONS = 13;
+
         private static readonly string[] PAWNWEAPON_FILENAMES = new string[NUM_PAWNWEAPONS] { PAWNWEAPON_DEADEYE_UPK_FILENAME, PAWNWEAPON_ZOEY_UPK_FILENAME, PAWNWEAPON_BRASS_UPK_FILENAME,
                                                                  PAWNWEAPON_CYGNUS_UPK_FILENAME, PAWNWEAPON_BLOODSPIKE_UPK_FILENAME, PAWNWEAPON_TEMPER_UPK_FILENAME,
                                                                  PAWNWEAPON_HOOKSWORD_UPK_FILENAME, PAWNWEAPON_OZIEL_UPK_FILENAME, PAWNWEAPON_TUNDRA_UPK_FILENAME,
                                                                  PAWNWEAPON_STINKEYE_UPK_FILENAME, PAWNWEAPON_DOBBIN_UPK_FILENAME, PAWNWEAPON_BLACKPAW_UPK_FILENAME, PAWNWEAPON_MIDNIGHT_UPK_FILENAME };
+       
         private static readonly int[] PAWNWEAPON_ORIGINAL_FILESIZES = new int[NUM_PAWNWEAPONS] { PAWNWEAPON_DEADEYE_UPK_FILE_SIZE, PAWNWEAPON_ZOEY_UPK_FILE_SIZE, PAWNWEAPON_BRASS_UPK_FILE_SIZE,
                                                                  PAWNWEAPON_CYGNUS_UPK_FILE_SIZE, PAWNWEAPON_BLOODSPIKE_UPK_FILE_SIZE, PAWNWEAPON_TEMPER_UPK_FILE_SIZE,
                                                                  PAWNWEAPON_HOOKSWORD_UPK_FILE_SIZE, PAWNWEAPON_OZIEL_UPK_FILE_SIZE, PAWNWEAPON_TUNDRA_UPK_FILE_SIZE,
@@ -121,7 +128,7 @@ namespace SingleplayerLauncher
             // CharacterData.ini Initialization
             CreateBackup(characterDataIniFileName, characterDataIniPath);
 
-            ConfigFile characterDataConfigFile = new ConfigFile(characterDataIniPath, true);
+            ConfigFile characterDataConfigFile = new ConfigFile(characterDataIniPath, newFile: true);
             IniData characterData = characterDataConfigFile.data;
 
             characterData.Sections.AddSection(RCharacterDataSection);
@@ -184,10 +191,10 @@ namespace SingleplayerLauncher
 
         private void CreateBackup(string fileName, string path)
         {
-            bool backupFolderExists = System.IO.Directory.Exists(backupFolderPath);
+            bool backupFolderExists = Directory.Exists(backupFolderPath);
 
             if (!backupFolderExists)
-                System.IO.Directory.CreateDirectory(backupFolderPath);
+                Directory.CreateDirectory(backupFolderPath);
 
             if (!File.Exists(backupFolderPath + "//" + fileName))
                 File.Copy(path, backupFolderPath + "//" + fileName);
@@ -270,7 +277,7 @@ namespace SingleplayerLauncher
 
             int trapTier = 7;
             if (comBoxDifficulty.SelectedItem != null)
-                trapTier = Resources.GameInfo.DifficultyTrapTierMap[comBoxDifficulty.SelectedItem.ToString()];
+                trapTier = GameInfo.DifficultyTrapTierMap[comBoxDifficulty.SelectedItem.ToString()];
             if (comBoxExtraDifficulty.SelectedItem != null)
                 trapTier = Math.Max(1, trapTier - comBoxExtraDifficulty.SelectedIndex);
 
@@ -279,6 +286,7 @@ namespace SingleplayerLauncher
             {
                 hero.ApplyLoadoutChanges();
             }
+
             ApplyMods(spitfireGameUPKFile);
             ApplyTrapTiers(spitfireGameUPKFile, trapTier);
             spitfireGameUPKFile.Save();
@@ -330,19 +338,19 @@ namespace SingleplayerLauncher
         private void ApplyTrapTiers(UPKFile spitfireGameUPKFile, int trapTier)
         {
             if (trapTier < 1)
-                throw new Exception("Trap Tier should be greater than 1 but it was: " + trapTier);
+                throw new Exception("Trap Tier should be greater than or equal to 1 but it was: " + trapTier);
             if (spitfireGameUPKFile == null)
                 throw new Exception("Null spitfireGameUPKFile");
 
-            foreach (Resources.Loadout.Trap trap in Resources.Loadout.Traps.Values)
+            foreach (Loadout.Trap trap in Loadout.Traps.Values)
             {
                 if (trap == null) continue;
 
                 if (trap.StatModifierExpressions != null)
                 {
-                    foreach (Resources.Loadout.Trap.StatModifierExpression expression in trap.StatModifierExpressions)
+                    foreach (Loadout.Trap.StatModifierExpression expression in trap.StatModifierExpressions)
                     {
-                        spitfireGameUPKFile.OverrideBytes(Encoding.ASCII.GetBytes(expression.Expression.Replace(TRAP_TIER_STRING, new String(' ', TRAP_TIER_STRING.Length - 1) + (trapTier - 1))), expression.Offset);
+                        spitfireGameUPKFile.OverrideBytes(Encoding.ASCII.GetBytes(expression.Expression.Replace(TRAP_TIER_STRING, new string(' ', TRAP_TIER_STRING.Length - 1) + (trapTier - 1))), expression.Offset);
                     }
                 }
                 else // TripWire and TempleAlarmGong
@@ -353,7 +361,7 @@ namespace SingleplayerLauncher
                 foreach (int offset in trap.TextureOffsets)
                 {
                     if (trap.TextureIds == null)
-                        spitfireGameUPKFile.OverrideBytes(Resources.Loadout.TrapTextureIds[Math.Min(trapTier, MAX_TRAP_TIER) - 1], offset);
+                        spitfireGameUPKFile.OverrideBytes(Loadout.TrapTextureIds[Math.Min(trapTier, MAX_TRAP_TIER) - 1], offset);
                     else // assumes that traps with unique TextureIds (WebSpinner) only have 1 texture to replace
                         spitfireGameUPKFile.OverrideBytes(trap.TextureIds[Math.Min(trapTier, MAX_TRAP_TIER) - 1], offset);
                 }
@@ -384,17 +392,14 @@ namespace SingleplayerLauncher
                 data[RCharacterDataSection][characterDataKeyGodMode] = (bool)Settings.Instance["GodMode"] ? valueTrue : valueFalse;
 
             if (Settings.Instance.ContainsKey("StartingCoin"))
-                data[RCharacterDataSection][characterDataKeyBonusStartingCoin] = calculateMultiplierStartingCoin(comBoxMap.Text, Int32.Parse((string)Settings.Instance["StartingCoin"]));
+                data[RCharacterDataSection][characterDataKeyBonusStartingCoin] = calculateMultiplierStartingCoin(comBoxMap.Text, int.Parse((string)Settings.Instance["StartingCoin"]));
 
             characterData.Write(data);
         }
 
         private string calculateMultiplierStartingCoin(string mapName, int startingCoin)
         {
-            if (mapName.Contains("Tutorial") || mapName.Contains("Prologue"))
-                return "0";
-
-            if (startingCoin == -1)
+            if (mapName.Contains("Tutorial") || mapName.Contains("Prologue") || startingCoin == -1)
             {
                 return "0";
             }
@@ -402,21 +407,17 @@ namespace SingleplayerLauncher
             {
                 return "-1";
             }
-            else
+            int baseStartingCoins = 9000;
+            if (GameInfo.startingCoin6000Maps.Contains(mapName))
             {
-                int baseStartingCoins = 9000;
-                if (GameInfo.startingCoin6000Maps.Contains(mapName))
-                {
-                    baseStartingCoins = 6000;
-                }
-
-                double startingCoinsMultiplier = (double)startingCoin / baseStartingCoins;
-                // it's a multiplier, so it needs an offset of -1
-                startingCoinsMultiplier--;
-
-                return startingCoinsMultiplier.ToString();
+                baseStartingCoins = 6000;
             }
 
+            double startingCoinsMultiplier = (double)startingCoin / baseStartingCoins;
+            // it's a multiplier, so it needs an offset of -1
+            startingCoinsMultiplier--;
+
+            return startingCoinsMultiplier.ToString();
         }
 
         private void UpdateDefaultGameIni()
@@ -427,7 +428,7 @@ namespace SingleplayerLauncher
             string selectedGameMode = comBoxGameMode.SelectedItem.ToString();
             string selectedExtraDifficulty = comBoxExtraDifficulty.SelectedItem.ToString();
 
-            foreach (KeyValuePair<string, string> entry in Resources.DefaultValues.GameReplicationInfoSection) // TODO improve default/set handling to prevent rewriting same key
+            foreach (KeyValuePair<string, string> entry in DefaultValues.GameReplicationInfoSection) // TODO improve default/set handling to prevent rewriting same key
                 data[RGameReplicationInfoSection][entry.Key] = entry.Value;
 
             data[RGameReplicationInfoSection][GameReplicationInfoKeyGameMode] = IniConfig.GameModes[selectedGameMode];
@@ -508,7 +509,7 @@ namespace SingleplayerLauncher
         private void btnLoadoutEditor_Click(object sender, EventArgs e)
         {
             //TOAD CODE
-            MainFormLocationTOAD.MainFormLocationLeft = Left + this.Width;
+            MainFormLocationTOAD.MainFormLocationLeft = Left + Width;
             MainFormLocationTOAD.MainFormLocationTop = Top;
             //END TOAD CODE
             LoadoutEditorForm ld = new LoadoutEditorForm();
@@ -538,8 +539,12 @@ namespace SingleplayerLauncher
 
                     string selectedMap = comBoxMap.SelectedItem.ToString();
 
-                    foreach (string md in GameInfo.Maps[selectedMap].SurvivalDifficulties)
-                        comBoxDifficulty.Items.Add(md);
+                    var matchingMap = GameInfo.Maps.FirstOrDefault(x => x.Key.Equals(selectedMap, StringComparison.InvariantCultureIgnoreCase));
+
+                    foreach (var difficulty in matchingMap.Value)
+                    {
+                        comBoxDifficulty.Items.Add(difficulty);
+                    }
 
                     comBoxDifficulty.SelectedIndex = 0;
 
@@ -576,49 +581,19 @@ namespace SingleplayerLauncher
                     Settings.Instance["StartingCoin"] = "9000";
                 Settings.Save();
             }
+            
+            lblMapSelected.Text = comBoxMap.Text;
 
             //-- show map Fusion Developer Toad Bug Guy  -- - A few missing images. Stinkeye's icon, Maps Castle Gates, Midnight Market, Shark Island, Stables at Eventide, Water Garden.
 
-            lblMapSelected.Text = comBoxMap.Text;
-            
-            /*            
-                        if (selectedMap.Contains("Academy Sewers")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Sewers;
-                        if (selectedMap.Contains("Archmage Library")) pictureBox1.Image = Properties.Resources.MiniMap_NPE_2;
-                        if (selectedMap.Contains("Avalanche")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Avalanche;
-                        if (selectedMap.Contains("Banquet Hall")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_BanquetHall;
-                        /*if (selectedMap.Contains("Castle Gates")) pictureBox1.Image = Properties.Resources.MiniMap__________;*/
-            /*            if (selectedMap.Contains("Cliffside Clash")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_2Lane;
-                        if (selectedMap.Contains("Confluence")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_AcademyCanals;
-                        if (selectedMap.Contains("BanquetHall")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_BanquetHall;
-                        if (selectedMap.Contains("Crogon Keep")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_CrogonKeep;
-                        if (selectedMap.Contains("Docks at Eventide")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_SUR_Pirates;
-                        if (selectedMap.Contains("Eventide Fortress")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Surrounded;
-                        if (selectedMap.Contains("Eventide Ramparts")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_SUR_NorthernClans;
-                        if (selectedMap.Contains("Frostbite")) pictureBox1.Image = Properties.Resources.Minimap_PvE_FrostBite;
-                        if (selectedMap.Contains("Gates of Thuricvod")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Corridors;
-                        if (selectedMap.Contains("Highlands")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Highlands;
-                        if (selectedMap.Contains("Maximum Security")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_AcademyDungeon;
-                        /* if (selectedMap.Contains("Midnight Market")) pictureBox1.Image = Properties.Resources.MiniMap____________; */
-            /*            if (selectedMap.Contains("Orcatraz")) pictureBox1.Image = Properties.Resources.Minimap_PvE_Orcatraz;
-                        if (selectedMap.Contains("Orcri-La")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Orcvil_Temple;
-                        if (selectedMap.Contains("Restricted Section")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_RestrictedSection;
-                        if (selectedMap.Contains("Riftmaker's Temple")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_AcademyTemple;
-                        /*if (selectedMap.Contains("Shark Island")) pictureBox1.Image = Properties.Resources.MiniMap____________;*/
-            /*if (selectedMap.Contains("Stables at Eventide")) pictureBox1.Image = Properties.Resources.MiniMap____________;*/
-            /*            if (selectedMap.Contains("Storm Drain")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Flushed;
-                        if (selectedMap.Contains("Temple Graveyard")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Mausoleum;
-                        if (selectedMap.Contains("The Baths")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Baths;
-                        if (selectedMap.Contains("The Falling Folly")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Towering;
-                        if (selectedMap.Contains("The Wall")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_TheWall;
-                        if (selectedMap.Contains("Throne Room")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_ThroneRoom;
-                        if (selectedMap.Contains("Thuricvod Village")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_Gap;
-                        if (selectedMap.Contains("Training Grounds")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_TrainingGrounds;
-                        if (selectedMap.Contains("Unchained Fortress")) pictureBox1.Image = Properties.Resources.MiniMap_PvE_OneWay;
-                        /*if (selectedMap.Contains("Water Garden")) pictureBox1.Image = Properties.Resources.MiniMap____________;*/
+            //go through list of of maps, and find the first matching name, then use that Maps' MiniMapResource
+            //if that map isnt found or if the MiniMapResource is null, default to sewers image.
+            //this should guard against nulls until all minimap images are located
 
-            /* end show map fusion dev yadda yadda yadda */
-            pictureBox1.Image = Maps[selectedMap].MiniMapResource;
-            
+            pictureBox1.Image = Entities.Map.Maps.FirstOrDefault
+                (x => x.Name.Equals(selectedMap, StringComparison.InvariantCultureIgnoreCase))
+                ?.MiniMapResource ?? Properties.Resources.MiniMap_PvE_Sewers;
+
         }
 
 
@@ -665,10 +640,14 @@ namespace SingleplayerLauncher
                 comBoxSkin.Enabled = false;
                 comBoxSkin.SelectedIndex = -1;
             }
-            
+
             //toad
             //if (comBoxHero.Text.Contains("Bionka")) pictureBox1.Image = "player_Bionka_Queen_Momma.png";
-            
+            //TODO isnt this the same picturebox the map_change event uses?
+            //stubbed out for now. once we have the player portraits we can uncomment this
+            //pictureBox1.Image = Entities.Heroes.FirstOrDefault
+            //    (x => x.Name.Equals(selectedHero, StringComparison.InvariantCultureIgnoreCase))
+            //    ?.ImageResourse ?? Properties.Resources.Default_Player_Image;
 
 
         }
@@ -699,7 +678,7 @@ namespace SingleplayerLauncher
 
         //- added by Fusion Developer aka Toad aka The Bug Guy --/
 
-        private void lblRandomHero_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 14; //- I don't know how to get Random to work random range(0-18)
+        private void lblRandomHero_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = new Random().Next(0,18); //random range(0-18)
         private void lblBionka_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 0;
         private void lblBlackpaw_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 1;
         private void lblBloodspike_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 2;
@@ -720,12 +699,6 @@ namespace SingleplayerLauncher
         private void lblYiLin_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 17;
         private void lblZoey_Click(object sender, EventArgs e) => comBoxHero.SelectedIndex = 18;
 
-        // Random r = new Random();
-        //int rInt = r.Next(0, 100); //for ints
-        //int range = 100;
-
-
-
         // mini toad
         public static class MainFormLocationTOAD
         {
@@ -733,15 +706,7 @@ namespace SingleplayerLauncher
             public static int MainFormLocationTop;
         }
 
-
-
-
         //toad code
-
-
-
-
-
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {

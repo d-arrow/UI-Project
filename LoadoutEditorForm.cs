@@ -11,7 +11,6 @@ namespace SingleplayerLauncher
     {
         private readonly List<ComboBox> comBoxLoadoutSlots;
         private readonly List<ComboBox> comBoxGuardianSlots;
-        public static List<byte[]> bytes = new List<byte[]>();
         private readonly Hero hero = Hero.Instance;
 
         private const int nLoadoutSlots = 9;
@@ -37,17 +36,16 @@ namespace SingleplayerLauncher
 
         private void LoadoutEditor_Load(object sender, EventArgs e)
         {
-            PopulateSlots(comBoxLoadoutSlots, Resources.Loadout.Traps.Keys.ToList());
-            PopulateSlots(comBoxLoadoutSlots, Resources.Loadout.Gear.Keys.ToList());
-            PopulateSlots(comBoxGuardianSlots, Resources.Loadout.Guardians.Keys.ToList());
+            PopulateSlots(comBoxLoadoutSlots, Loadout.Traps.Keys.ToList());
+            PopulateSlots(comBoxLoadoutSlots, Loadout.Gear.Keys.ToList());
+            PopulateSlots(comBoxGuardianSlots, Loadout.Guardians.Keys.ToList());
 
             //toad start
             comBoxHero.Text = "TimeMaster";
-            this.StartPosition = FormStartPosition.Manual;
+            StartPosition = FormStartPosition.Manual;
             Left = MainFormLocationTOAD.MainFormLocationLeft;
             Top = MainFormLocationTOAD.MainFormLocationTop;
             //toad end
-
 
             // TODO implement a way of loading previous loadout used
             // Placeholder -> Default loadout
@@ -60,7 +58,7 @@ namespace SingleplayerLauncher
             SetDefaultLoadoutInForm(); //also closes
             Settings.Instance["loadout"] = hero.Loadout; //closes
             Settings.Save();
-            this.Text = "Loadout saved: " + DateTime.Now.ToString();
+            Text = "Loadout saved: " + DateTime.Now.ToString();
             //Close();
         }
 
